@@ -1,13 +1,12 @@
-jest.mock('../../../../node_modules/rethinkdb')
-jest.mock('uuid')
+jest.mock('rethinkdb', () => {console.log('rethinkdb mock')})
+jest.mock('uuid', () => {console.log('uuid mock')})
+jest.mock('aws-sdk', () => {console.log('aws-sdk mock'); return {S3: jest.fn()}})
+jest.mock('crypto-js', () => ({enc: jest.fn(), SHA3: jest.fn()}))
+jest.mock('../../../db', () => ({db:{table: jest.fn()}}))
 jest.dontMock('../Users')
-jest.mock('../../../db')
 
 const mockRdb = require('../../../../../tests/mockRdb')
 const UserModel = require('../Users')
-jest.mock('../../../db').returnValue({
-  db: 'stuff'
-})
 
 const makeCursor = objects => ({
   toArray: () => objects
@@ -16,11 +15,11 @@ const makeCursor = objects => ({
 describe('User loader', () => {
   let Users
   beforeEach(() => {
-    Users = UserModel({conn: 'mockConnection'})
+    Users = UserModel({conn: 'mockConnection'}).Users
   })
-  describe(('findOrCreateFromAuth', () => {
+  describe('findOrCreateFromAuth', () => {
     // Mocks not working as advertised, timeboxing for now
-    xit('should return a user if one already exists', () => {
+    it('should return a user if one already exists', () => {
       let calls = []
       let mockProfile = {
         displayName: 'Stampisaur',
@@ -37,5 +36,5 @@ describe('User loader', () => {
     it('should create a user if one does not exist', () => {
 
     })
-  }))
+  })
 })

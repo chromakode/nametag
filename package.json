@@ -95,9 +95,7 @@
   },
   "jest": {
     "unmockedModulePathPatterns": [
-      "<rootDir>/node_modules/react",
-      "<rootDir>/node_modules/bluebird",
-      "<rootDir>/server/node_modules"
+      "<rootDir>/node_modules/react"
     ],
     "testPathIgnorePatterns": [
       "/app/bower_components/",
